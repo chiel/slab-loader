@@ -1,11 +1,11 @@
-/*
-slab.run.js
+// Chiel Kunkels (@chielkunkels)
 
-author: @chielkunkels
-*/
-
-(function(slab){
+(function(context){
 'use strict';
+
+if (!context.slab) {
+	context.slab = {};
+}
 
 var options = {
 	tplRoot: '/tpl'
@@ -14,19 +14,21 @@ var options = {
 var templates = {};
 
 // configure slab.load
-var loadOptions = function(options){
-	console.log(loadOptions);
+context.slab.loadOptions = function(opts){
+	Object.each(opts, function(v, k){
+		options[k] = v;
+	});
 };
 
 // register available templates
-var register = function(tplObject){
+context.slab.register = function(tplObject){
 	Object.each(tplObject, function(fn, key){
 		templates[key] = fn;
 	});
 };
 
 // load a template by name
-var load = function(name){
+context.slab.load = function(name){
 	if (templates[name]) {
 		return templates[name];
 	}
@@ -43,11 +45,7 @@ var load = function(name){
 		onFailure: function(){}
 	}).send();
 
-	return slab.compile(tplString)[name];
+	return context.slab.compile(tplString)[name];
 };
 
-slab.loadOptions = loadOptions;
-slab.register = register;
-slab.load = load;
-
-})(typeof window.slab === 'undefined' ? (window.slab = {}) : window.slab);
+})(typeof exports != 'undefined' ? exports : this);
