@@ -45,7 +45,8 @@ context.slab.load = function(name){
 		onFailure: function(){}
 	}).send();
 
-	return context.slab.compile(tplString)[name];
+	templates[name] = context.slab.compile(tplString)[name];
+	return templates[name];
 };
 
 })(typeof exports != 'undefined' ? exports : this);
